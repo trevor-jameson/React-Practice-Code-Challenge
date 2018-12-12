@@ -8,8 +8,9 @@ const SushiContainer = (props) => {
 			<div className="belt">
 				{
 					props.sushis.map((sushi) => {
-						return <Sushi sushi={sushi} 
-													eat={props.eat} 
+						return <Sushi sushi={sushi}
+													key={sushi.id}
+													eat={props.eat}
 													taken={props.eaten.includes(sushi)}/>
 					})
 				}

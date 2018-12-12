@@ -1,15 +1,15 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 const Sushi = (props) => {
   return (
     <div className="sushi">
-      <div className="plate" 
+      <div className="plate"
            onClick={()=> props.eat(props.sushi)}>
-        { 
+        {
           props.taken ?
             null
           :
-            <img src={props.sushi.img_url} width="100%" />
+            <img alt="sushi" src={props.sushi.img_url} width="100%" />
         }
       </div>
       <h4 className="sushi-details">

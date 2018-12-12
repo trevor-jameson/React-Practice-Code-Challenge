@@ -9,9 +9,8 @@ class App extends Component {
   state = {
     sushis: [],
     eaten: [],
-    cost: 0,
-    budget: 100,
-    display: 0,
+    money: 100,
+    displayIndex: 0,
   }
 
   componentDidMount(){
@@ -25,35 +24,56 @@ class App extends Component {
   }
 
   eat = (sushi) => {
-    const newCost = this.state.cost + sushi.price
+    const newMoney = this.state.money - sushi.price
 
-    if (!this.state.eaten.includes(sushi) && newCost <= this.state.budget ) {
+    if (!this.state.eaten.includes(sushi) && newMoney >=0 ) {
       this.setState({
         eaten: [...this.state.eaten, sushi],
-        cost: newCost
+        money: newMoney
       })
     }
   }
 
   chooseFourSushis = () => {
-    return this.state.sushis.slice(this.state.display, this.state.display+4)
+    return this.state.sushis.slice(this.state.displayIndex, this.state.displayIndex+4)
   }
 
   more = (event) => {
+    let newDisplayIndex = this.state.displayIndex + 4
+
+    //bonus
+    if(newDisplayIndex >= this.state.sushis.length){
+      newDisplayIndex = 0
+    }
+
     this.setState({
-      display: this.state.display + 4
+      displayIndex: newDisplayIndex
+    })
+  }
+
+  //bonus
+  addMoney = (event) => {
+    event.preventDefault()
+    let addedMoney = parseInt(event.currentTarget.children[0].value)
+    if(!addedMoney){addedMoney = 0}
+    this.setState({
+      money: this.state.money + addedMoney
     })
   }
 
   render() {
     return (
       <div className="app">
-        <SushiContainer sushis={this.chooseFourSushis()} 
+        <form onSubmit={this.addMoney}>Add $ to Budget
+          <input type="text" />
+          <input type="submit" />
+        </form>
+        <SushiContainer sushis={this.chooseFourSushis()}
                         more={this.more}
                         eat={this.eat}
                         eaten={this.state.eaten} />
-        <Table remainingBudget={this.state.budget - this.state.cost} 
-               eaten={this.state.eaten}/>
+        <Table remainingBudget={this.state.money}
+               eaten={this.state.eaten} />
       </div>
     );
   }
