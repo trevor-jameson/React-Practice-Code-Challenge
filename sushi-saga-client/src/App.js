@@ -7,10 +7,26 @@ const API = "http://localhost:3000/sushis"
 
 class App extends Component {
 
+  constructor() {
+    super()
+    this.state = {
+      sushis: [],
+      money: 100,
+      sushisIndex: 0,
+    }
+  }
+
+  componentDidMount(){
+    fetch(API)
+      .then(res => res.json())
+      .then(data => this.setState({sushis: data}))
+  }
+
   render() {
+    const {sushis, sushisIndex, money} = this.state
     return (
       <div className="app">
-        <SushiContainer  />
+        <SushiContainer sushisSet={sushis.slice(sushisIndex, sushisIndex + 4)} />
         <Table />
       </div>
     );
