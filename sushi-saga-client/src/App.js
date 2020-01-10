@@ -13,7 +13,38 @@ class App extends Component {
       sushis: [],
       money: 100,
       sushisIndex: 0,
+      eatenSushis: []
     }
+  }
+
+  changePage = () => {
+    this.setState(prevState => {
+      return {
+        sushisIndex: prevState.sushisIndex + 4
+      }
+    })
+  }
+
+  eatSushi = (event) => {
+    const id = event.target.id.split('-')[1]
+    let newMoney = this.state.money
+    const newlyEatenSushis = [...this.state.eatenSushis]
+    const newSushis = this.state.sushis.map(sushi => {
+      if (sushi.id == id) {
+        if (newMoney - sushi.price >= 0) {
+          newMoney -= sushi.price
+          sushi.eaten = true
+          newlyEatenSushis.push(sushi.id)
+        }
+      }
+      return sushi
+    })
+
+    this.setState({
+      sushis: newSushis,
+      money: newMoney,
+      eatenSushis: newlyEatenSushis
+    })
   }
 
   componentDidMount(){
@@ -23,11 +54,14 @@ class App extends Component {
   }
 
   render() {
-    const {sushis, sushisIndex, money} = this.state
+    const {sushis, sushisIndex, money, eatenSushis} = this.state
     return (
       <div className="app">
-        <SushiContainer sushisSet={sushis.slice(sushisIndex, sushisIndex + 4)} />
-        <Table />
+        <SushiContainer 
+          changePage={this.changePage}
+          eatSushi={this.eatSushi}
+          sushisSet={sushis.slice(sushisIndex, sushisIndex + 4)} />
+        <Table money={money} eatenSushis={eatenSushis}/>
       </div>
     );
   }

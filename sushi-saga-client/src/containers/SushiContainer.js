@@ -7,9 +7,9 @@ const SushiContainer = (props) => {
     <Fragment>
       <div className="belt">
         {
-          props.sushisSet.map((sushi, ind) => <Sushi sushi={sushi} key={ind}/>)
+          props.sushisSet.map((sushi, ind) => <Sushi sushi={sushi} key={ind} eatSushi={props.eatSushi}/>)
         }
-        <MoreButton />
+        <MoreButton changePage={props.changePage}/>
       </div>
     </Fragment>
   )
